@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScreenPulse — Digital Wellbeing Analyzer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="noise-overlay"></div>
+
+  <!-- ─── HEADER ───────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="logo">
+      <div class="logo-pulse"></div>
+      <span class="logo-text">Screen<em>Pulse</em></span>
+    </div>
+    <nav class="step-nav">
+      <span class="step-dot active" data-step="1">01</span>
+      <span class="step-line"></span>
+      <span class="step-dot" data-step="2">02</span>
+      <span class="step-line"></span>
+      <span class="step-dot" data-step="3">03</span>
+    </nav>
+    <div class="header-tag">BETA v1.0</div>
+  </header>
+
+  <!-- ─── MAIN ──────────────────────────────────────────── -->
+  <main>
+
+    <!-- STEP 1: INPUT -->
+    <section class="step-panel active" id="step-1">
+      <div class="hero-label">STEP 01 / DATA INPUT</div>
+      <h1 class="hero-title">What's your phone<br/><em>really</em> costing you?</h1>
+      <p class="hero-sub">Enter your digital wellbeing stats below. We'll detect patterns of wastage, backlog, and distraction — then cross-examine you.</p>
+
+      <form id="wellbeing-form" autocomplete="off">
+        <!-- Row 1: Basic stats -->
+        <div class="form-grid">
+          <div class="form-card">
+            <label>Daily Screen Time</label>
+            <div class="input-row">
+              <input type="number" id="screen-time" placeholder="e.g. 6" min="0" max="24" step="0.5" required />
+              <span class="unit">hrs / day</span>
+            </div>
+            <p class="hint">Go to Settings → Screen Time / Digital Wellbeing</p>
+          </div>
+
+          <div class="form-card">
+            <label>Phone Pickups / Day</label>
+            <div class="input-row">
+              <input type="number" id="pickups" placeholder="e.g. 87" min="0" max="500" required />
+              <span class="unit">times</span>
+            </div>
+            <p class="hint">Check your phone unlock count in Screen Time</p>
+          </div>
+
+          <div class="form-card">
+            <label>Notifications Received</label>
+            <div class="input-row">
+              <input type="number" id="notifications" placeholder="e.g. 140" min="0" max="2000" required />
+              <span class="unit">/ day</span>
+            </div>
+            <p class="hint">Total daily alerts across all apps</p>
+          </div>
+
+          <div class="form-card">
+            <label>Sleep Hours (Avg)</label>
+            <div class="input-row">
+              <input type="number" id="sleep-hours" placeholder="e.g. 7" min="0" max="12" step="0.5" required />
+              <span class="unit">hrs / night</span>
+            </div>
+            <p class="hint">Actual sleep, not time in bed</p>
+          </div>
+        </div>
+
+        <!-- Row 2: App breakdown -->
+        <div class="section-label">APP CATEGORY BREAKDOWN (hours/day)</div>
+        <div class="form-grid four-col">
+          <div class="form-card mini">
+            <div class="app-icon social"></div>
+            <label>Social Media</label>
+            <input type="number" id="app-social" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon entertainment"></div>
+            <label>Entertainment</label>
+            <input type="number" id="app-entertainment" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon productivity"></div>
+            <label>Productivity</label>
+            <input type="number" id="app-productivity" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon games"></div>
+            <label>Games</label>
+            <input type="number" id="app-games" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon messaging"></div>
+            <label>Messaging</label>
+            <input type="number" id="app-messaging" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon browsing"></div>
+            <label>Web Browsing</label>
+            <input type="number" id="app-browsing" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon health"></div>
+            <label>Health & Fitness</label>
+            <input type="number" id="app-health" placeholder="0.0" min="0" step="0.1" />
+          </div>
+          <div class="form-card mini">
+            <div class="app-icon other"></div>
+            <label>Other</label>
+            <input type="number" id="app-other" placeholder="0.0" min="0" step="0.1" />
+          </div>
+        </div>
+
+        <!-- Row 3: Context -->
+        <div class="section-label">CONTEXT & GOALS</div>
+        <div class="form-grid two-col">
+          <div class="form-card">
+            <label>Your primary role / occupation</label>
+            <input type="text" id="occupation" placeholder="e.g. Student, Developer, Manager..." />
+          </div>
+          <div class="form-card">
+            <label>Biggest distraction app (name it)</label>
+            <input type="text" id="distraction-app" placeholder="e.g. Instagram, YouTube, TikTok..." />
+          </div>
+          <div class="form-card full-span">
+            <label>What tasks are you most behind on? (your "backlog")</label>
+            <textarea id="backlog" placeholder="e.g. studying for exams, finishing project reports, replying to important emails..." rows="3"></textarea>
+          </div>
+          <div class="form-card full-span">
+            <label>What does your ideal productive day look like?</label>
+            <textarea id="ideal-day" placeholder="e.g. 2 hrs deep work, exercise, 1 hr learning, proper meals..." rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <p class="privacy-note">🔒 All data is processed locally & via AI. Nothing is stored permanently.</p>
+          <button type="submit" class="cta-btn" id="analyze-btn">
+            <span>Analyze My Patterns</span>
+            <div class="btn-arrow">→</div>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- STEP 2: LOADING / ANALYZING -->
+    <section class="step-panel" id="step-2">
+      <div class="analysis-loader">
+        <div class="pulse-ring-wrap">
+          <div class="pulse-ring r1"></div>
+          <div class="pulse-ring r2"></div>
+          <div class="pulse-ring r3"></div>
+          <div class="core-circle">
+            <span id="loader-pct">0%</span>
+          </div>
+        </div>
+        <div class="loader-stages">
+          <p class="stage active" id="stage-1">⬡ Mapping screen time patterns...</p>
+          <p class="stage" id="stage-2">⬡ Detecting backlog correlations...</p>
+          <p class="stage" id="stage-3">⬡ Scoring distraction load...</p>
+          <p class="stage" id="stage-4">⬡ Generating cross-examination questions...</p>
+          <p class="stage" id="stage-5">⬡ Drafting your wellbeing blueprint...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: RESULTS DASHBOARD -->
+    <section class="step-panel" id="step-3">
+      <div class="results-header">
+        <div class="hero-label">STEP 03 / YOUR REPORT</div>
+        <h2 class="results-title">Your Digital Wellbeing<br/><em>Diagnostic</em></h2>
+        <button class="ghost-btn" id="restart-btn">← Start Over</button>
+      </div>
+
+      <!-- Score Cards Row -->
+      <div class="score-row" id="score-row">
+        <div class="score-card" id="score-overall">
+          <div class="score-label">OVERALL SCORE</div>
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 80 80" class="score-ring">
+              <circle cx="40" cy="40" r="34" class="ring-bg"/>
+              <circle cx="40" cy="40" r="34" class="ring-fill" id="ring-overall" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+            </svg>
+            <span class="score-number" id="score-number-overall">--</span>
+          </div>
+          <div class="score-grade" id="score-grade">--</div>
+        </div>
+        <div class="score-card secondary" id="score-wastage">
+          <div class="score-label">WASTAGE INDEX</div>
+          <div class="mini-bar-wrap">
+            <div class="mini-bar"><div class="mini-bar-fill waste-fill" id="bar-waste"></div></div>
+          </div>
+          <div class="score-number mini" id="score-wastage-val">--%</div>
+          <p class="score-desc">of daily screen time is low-value</p>
+        </div>
+        <div class="score-card secondary" id="score-backlog">
+          <div class="score-label">BACKLOG RISK</div>
+          <div class="mini-bar-wrap">
+            <div class="mini-bar"><div class="mini-bar-fill backlog-fill" id="bar-backlog"></div></div>
+          </div>
+          <div class="score-number mini" id="score-backlog-val">--</div>
+          <p class="score-desc">priority tasks at risk of being neglected</p>
+        </div>
+        <div class="score-card secondary" id="score-focus">
+          <div class="score-label">FOCUS FRAGMENTATION</div>
+          <div class="mini-bar-wrap">
+            <div class="mini-bar"><div class="mini-bar-fill focus-fill" id="bar-focus"></div></div>
+          </div>
+          <div class="score-number mini" id="score-focus-val">--x</div>
+          <p class="score-desc">context switches estimated per hour</p>
+        </div>
+      </div>
+
+      <!-- Main Analysis Grid -->
+      <div class="analysis-grid">
+        <!-- Left: Pattern Analysis -->
+        <div class="analysis-card wide">
+          <div class="card-header">
+            <span class="card-tag">PATTERN ANALYSIS</span>
+            <span class="card-badge">AI GENERATED</span>
+          </div>
+          <div id="pattern-analysis" class="card-body streaming-text">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <!-- Right: App Time Visual -->
+        <div class="analysis-card">
+          <div class="card-header">
+            <span class="card-tag">TIME DISTRIBUTION</span>
+          </div>
+          <div class="card-body">
+            <div id="time-chart" class="time-chart">
+              <!-- filled by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Wastage Breakdown -->
+        <div class="analysis-card">
+          <div class="card-header">
+            <span class="card-tag">WASTAGE BREAKDOWN</span>
+          </div>
+          <div id="wastage-analysis" class="card-body streaming-text"></div>
+        </div>
+
+        <!-- Action Plan -->
+        <div class="analysis-card wide">
+          <div class="card-header">
+            <span class="card-tag">30-DAY ACTION PLAN</span>
+            <span class="card-badge success">PERSONALIZED</span>
+          </div>
+          <div id="action-plan" class="card-body streaming-text"></div>
+        </div>
+      </div>
+
+      <!-- Cross-Questions Section -->
+      <div class="cross-q-section">
+        <div class="section-label">AI CROSS-EXAMINATION</div>
+        <p class="cross-q-intro">Answer honestly. These questions are designed to surface blind spots in how you use your phone.</p>
+        <div id="cross-questions" class="questions-list">
+          <!-- filled by JS -->
+        </div>
+
+        <!-- User Response Panel -->
+        <div class="response-panel" id="response-panel" style="display:none">
+          <div class="card-header">
+            <span class="card-tag">YOUR REFLECTION</span>
+            <span class="card-badge">LIVE</span>
+          </div>
+          <div id="ai-followup" class="card-body streaming-text"></div>
+        </div>
+      </div>
+
+      <!-- Daily Time Budget -->
+      <div class="budget-section">
+        <div class="section-label">RECOMMENDED DAILY TIME BUDGET</div>
+        <div id="time-budget" class="budget-grid">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>ScreenPulse — Digital Wellbeing Analyzer &nbsp;·&nbsp; Powered by AI &nbsp;·&nbsp; <span id="current-date"></span></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
